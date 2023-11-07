@@ -29,6 +29,7 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
+// i couldnt figure it out how to pick it from here?
 UserSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
