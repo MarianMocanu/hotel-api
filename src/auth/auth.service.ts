@@ -34,7 +34,6 @@ export class AuthService {
         const token = jwt.sign({ _id: user._id }, process.env.jwt_secret)
         return { status: 'success', message: 'Login successful', token: token };
       }
-      return { status: 'error', message: 'Login failed' };
     }
     return { status: 'error', message: 'Login failed' };
   }
