@@ -6,6 +6,9 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { usersProviders } from './auth/auth.providers';
 import { DatabaseModule } from './database.module';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Module({
   imports: [AuthModule, DatabaseModule],
