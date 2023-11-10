@@ -14,12 +14,12 @@ export class AuthController {
 
   @Post('login')
   login(@Body() loginData: LoginUserDto) {
-    return this.authService.login(loginData)
+    return this.authService.login(loginData);
   }
+
 
   @Get('user/:token')
   getUser(@Param('token') token: string) {
     return this.authService.getUser(token);
   }
-
 }

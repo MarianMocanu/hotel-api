@@ -1,7 +1,18 @@
-import * as mongoose from 'mongoose';
+import { Document, Schema } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
-export const UserSchema = new mongoose.Schema(
+export interface IUser extends Document {
+  readonly name: string;
+  readonly phone: string | undefined;
+  readonly email: string;
+  readonly address: string | undefined;
+  readonly password: string;
+  readonly dob: Date | undefined;
+
+  comparePassword(password: string): Promise<boolean>;
+}
+
+export const UserSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     phone: { type: String, required: false, trim: true },
@@ -29,7 +40,6 @@ UserSchema.pre('save', async function (next) {
   }
 });
 
-// i couldnt figure it out how to pick it from here?
-UserSchema.methods.comparePassword = async function (password) {
+UserSchema.methods.comparePassword = async function (password: string) {
   return await bcrypt.compare(password, this.password);
 };
