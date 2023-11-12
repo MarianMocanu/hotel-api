@@ -1,6 +1,5 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { User } from '../interfaces/user.interface';
 import { CreateUserDTO } from '../dtos/create-user.dto';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
 import { IUser } from '../schemas/user.schema';
