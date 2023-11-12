@@ -12,23 +12,23 @@ export class AuthService {
     private jwtService: JwtService,
     @Inject('USER_MODEL')
     private userModel: Model<IUser>,
-  ) {}
+  ) { }
 
   async signup(createUserDTO: CreateUserDTO): Promise<IUser> {
     const createdUser = new this.userModel(createUserDTO);
     return createdUser.save();
   }
-  
+
   async login(loginUserDTO: LoginUserDto): Promise<any> {
-    
-  
+
+
     const { email, password } = loginUserDTO;
     const user = await this.userModel.findOne({ email });
-     if (user && (await user.comparePassword(password))) {
+    if (user && (await user.comparePassword(password))) {
       const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
       return { status: 'success', message: 'Login successful', token: token };
     }
-      return new UnauthorizedException('Invalid token');
+    return new UnauthorizedException('Invalid token');
   }
 
 
@@ -37,7 +37,7 @@ export class AuthService {
       const response = await this.jwtService.verifyAsync(token)
       const id = response.sub
       const user = await this.userModel.findById(id);
-      if(user) {
+      if (user) {
         const userRequest = {
           name: user.name,
           email: user.email,
@@ -51,10 +51,12 @@ export class AuthService {
         return new UnauthorizedException('Authentication failed');
 
       }
-      
-  
 
-  } catch (error) {  
-   return new UnauthorizedException('Login failed');
 
+
+    } catch (error) {
+      return new UnauthorizedException('Login failed');
+
+    }
+  }
 }
