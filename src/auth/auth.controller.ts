@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDTO } from 'src/dtos/create-user.dto';
 import { LoginUserDto } from 'src/dtos/login-user.dto';
@@ -19,7 +19,7 @@ export class AuthController {
 
 
   @Get('user/:token')
-  getUser(@Param('token') token: string) {
-    return this.authService.getUser(token);
+  getUser(@Request() req) {
+    return this.authService.getUser(req);
   }
 }

@@ -5,13 +5,14 @@ import { LoginUserDto } from 'src/dtos/login-user.dto';
 import { IUser } from '../schemas/user.schema';
 import * as jwt from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     @Inject('USER_MODEL')
-    private userModel: Model<IUser>,
+    private userModel: Model<IUser>
   ) { }
 
   async signup(createUserDTO: CreateUserDTO): Promise<IUser> {
@@ -32,10 +33,12 @@ export class AuthService {
   }
 
 
-  async getUser(token: string): Promise<Partial<IUser>> {
+  async getUser(req: Request): Promise<Partial<IUser>> {
     try {
-      const response = await this.jwtService.verifyAsync(token)
-      const id = response.sub
+      const token = req.headers['authorization'];
+      const response = await this.jwtService.verifyAsync(token);
+      console.log(response)
+      const id = response._id
       const user = await this.userModel.findById(id);
       if (user) {
         const userRequest = {
@@ -45,16 +48,17 @@ export class AuthService {
           address: user.address ? user.address : undefined,
           dob: user.dob ? user.dob : undefined,
         }
-
+        
         return userRequest
       } else {
         return new UnauthorizedException('Authentication failed');
-
+        
       }
-
-
-
+      
+      
+      
     } catch (error) {
+      return error.message;
       return new UnauthorizedException('Login failed');
 
     }

@@ -7,6 +7,8 @@ import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenMiddleware } from './token.middleware';
 
+console.log("defmkfme", jwtConstants.secret);
+
 @Module({
   imports: [DatabaseModule, JwtModule.register({
     global: true,
@@ -17,9 +19,10 @@ import { TokenMiddleware } from './token.middleware';
   providers: [AuthService, ...usersProviders],
 })
 export class AuthModule implements NestModule {
+  
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(TokenMiddleware)
-      .forRoutes('auth/*'); 
+      .forRoutes('auth/user/:token'); 
   }
 }

@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,14 +11,12 @@ import { DatabaseModule } from './database.module';
 import { HotelsService } from './hotels/hotels.service';
 import { HotelsController } from './hotels/hotels.controller';
 import { HotelsModule } from './hotels/hotels.module';
-import * as dotenv from 'dotenv';
 import { hotelsProviders } from './hotels/hotels.providers';
 import { RoomsService } from './rooms/rooms.service';
 import { RoomsController } from './rooms/rooms.controller';
 import { RoomsModule } from './rooms/rooms.module';
 import { roomsProviders } from './rooms/rooms.providers';
 
-dotenv.config();
 
 @Module({
   imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule],
