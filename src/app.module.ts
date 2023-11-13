@@ -11,12 +11,16 @@ import { HotelsController } from './hotels/hotels.controller';
 import { HotelsModule } from './hotels/hotels.module';
 import * as dotenv from 'dotenv';
 import { hotelsProviders } from './hotels/hotels.providers';
+import { RoomsService } from './rooms/rooms.service';
+import { RoomsController } from './rooms/rooms.controller';
+import { RoomsModule } from './rooms/rooms.module';
+import { roomsProviders } from './rooms/rooms.providers';
 
 dotenv.config();
 
 @Module({
-  imports: [AuthModule, DatabaseModule, HotelsModule],
-  controllers: [AppController, AuthController, HotelsController],
-  providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, HotelsService],
+  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule],
+  controllers: [AppController, AuthController, HotelsController, RoomsController],
+  providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, ...roomsProviders, HotelsService, RoomsService],
 })
 export class AppModule {}

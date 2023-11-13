@@ -40,13 +40,25 @@ export class HotelsService {
         }
     }
 
-    async getAll(): Promise<Hotel[]>  {
+    async getAll(): Promise<Hotel[]> {
         try {
             const response = await this.hotelModel.find().exec()
             return response
         }
         catch (error) {
             return error.message;
+        }
+    }
+
+    async checkIfHotelExists(hotel_id: string): Promise<boolean> {
+        try {
+            const doesHotelExists = await this.hotelModel.findById(hotel_id).exec();
+            // !! is a concise way to ensure that a value is converted to a boolean, with the end result being true if the original value was truthy and false if it was falsy.
+            return !!doesHotelExists
+        } catch (error) {
+            console.log(error.message);
+            
+            return false
         }
     }
 
