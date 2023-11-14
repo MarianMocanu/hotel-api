@@ -10,7 +10,7 @@ export class RoomsController {
     constructor(private readonly roomsService: RoomsService, private readonly hotelsService: HotelsService) { }
 
 
-    @Post('create')
+    @Post()
     async createHotel(@Body() roomData: CreateRoomDTO) {
         //should i check this here or in the service?
         const doesHotelExists = await this.hotelsService.checkIfHotelExists(roomData.hotel_id);

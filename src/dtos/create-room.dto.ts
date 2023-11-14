@@ -1,5 +1,4 @@
 import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsString, Validate } from 'class-validator';
-import { HotelsService } from 'src/hotels/hotels.service';
 
 export class CreateRoomDTO {
 

@@ -7,7 +7,7 @@ export class HotelsController {
 
     constructor(private readonly hotelsService: HotelsService) {}
 
-    @Post('create')
+    @Post()
     createHotel(@Body() hotelData: CreateHotelDTO) {
         return this.hotelsService.create(hotelData);
     }
