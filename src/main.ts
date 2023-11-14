@@ -1,5 +1,7 @@
+require('dotenv').config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,7 +11,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     // credentials: true, // Optional: Allow cookies and authentication headers
   });
-
-  await app.listen(process.env.PORT);
+  const port = process.env.PORT
+  await app.listen(port);
+  console.log(`Server is running and listening on port ${port}`);
 }
 bootstrap();
