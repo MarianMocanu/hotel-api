@@ -7,7 +7,6 @@ import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { TokenMiddleware } from './token.middleware';
 
-console.log("defmkfme", jwtConstants.secret);
 
 @Module({
   imports: [DatabaseModule, JwtModule.register({
