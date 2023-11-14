@@ -2,6 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 import { CreateHotelDTO } from 'src/dtos/create-hotel.dto';
 import { Hotel } from 'src/schemas/hotel.schema';
+import { Room } from 'src/schemas/room.schema';
 
 @Injectable()
 export class HotelsService {
@@ -50,16 +51,9 @@ export class HotelsService {
         }
     }
 
-    async checkIfHotelExists(hotel_id: string): Promise<boolean> {
-        try {
-            const doesHotelExists = await this.hotelModel.findById(hotel_id).exec();
-            // !! is a concise way to ensure that a value is converted to a boolean, with the end result being true if the original value was truthy and false if it was falsy.
-            return !!doesHotelExists
-        } catch (error) {
-            console.log(error.message);
-            
-            return false
-        }
+    async getRooms(id: string): Promise<Hotel> {
+        //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
+        return this.hotelModel.findById(id).populate('rooms');
     }
 
 }

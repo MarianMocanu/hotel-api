@@ -3,10 +3,6 @@ import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsNumber, IsString, Validate } 
 export class CreateRoomDTO {
 
     @IsNotEmpty()
-    @IsMongoId()
-    hotel_id: string;
-
-    @IsNotEmpty()
     @IsString()
     name: string;
 
@@ -42,8 +38,7 @@ export class CreateRoomDTO {
     booked_dates: Date[];
 
 
-    constructor(hotel_id: string, name: string, description: string, type: string, size: number, facilities: string[], images: string[], price: number, maxGuests: number, booked_dates: Date[]) {
-        this.hotel_id = hotel_id;
+    constructor(name: string, description: string, type: string, size: number, facilities: string[], images: string[], price: number, maxGuests: number, booked_dates: Date[]) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -54,7 +49,6 @@ export class CreateRoomDTO {
         this.maxGuests = maxGuests;
         this.booked_dates = booked_dates;
     }
-
 
 }
 
