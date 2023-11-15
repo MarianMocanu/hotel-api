@@ -5,9 +5,7 @@ import { AuthController } from './auth.controller';
 import { usersProviders } from './auth.providers';
 import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
-import { TokenMiddleware } from './token.middleware';
 
-console.log("defmkfme", jwtConstants.secret);
 
 @Module({
   imports: [DatabaseModule, JwtModule.register({
@@ -18,11 +16,4 @@ console.log("defmkfme", jwtConstants.secret);
   controllers: [AuthController],
   providers: [AuthService, ...usersProviders],
 })
-export class AuthModule implements NestModule {
-  
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(TokenMiddleware)
-      .forRoutes('auth/user/:token'); 
-  }
-}
+export class AuthModule {}
