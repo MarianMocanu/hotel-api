@@ -16,10 +16,11 @@ import { RoomsService } from './rooms/rooms.service';
 import { RoomsController } from './rooms/rooms.controller';
 import { RoomsModule } from './rooms/rooms.module';
 import { roomsProviders } from './rooms/rooms.providers';
+import { ServicesModule } from './services/services.module';
 
 
 @Module({
-  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule],
+  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule, ServicesModule],
   controllers: [AppController, AuthController, HotelsController, RoomsController],
   providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, ...roomsProviders, HotelsService, RoomsService],
 })
