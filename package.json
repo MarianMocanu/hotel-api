@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "generate:hotels": "node ./src/scripts/populateHotels.js",
+    "generate:users": "node ./src/scripts/populateUsers.js",
+    "generate:rooms": "node ./src/scripts/populateRooms.js",
+    "generate:db": "npm run generate:users && npm run generate:rooms && npm run generate:hotels"
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",
