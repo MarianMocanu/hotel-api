@@ -28,6 +28,9 @@ export class Room {
 
   @Prop({ type: [Date] })
   booked_dates: Date[];
+
+  // @Prop({ type: [Date] })
+  // booked_dates: {[key: number]: Date[]};
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

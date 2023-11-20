@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FilterQuery, Model, UpdateQuery } from 'mongoose';
+import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
 import { CreateRoomDTO } from 'src/dtos/create-room.dto';
 import { Room } from 'src/schemas/room.schema';
 
@@ -42,6 +42,20 @@ export class RoomsService {
         }
         catch (error) {
             return error.message;
+        }
+    }
+
+
+    async bookRoom(id: ObjectId, dates: Date[]) : Promise<any> {
+        try {
+            await this.roomModel.findOneAndUpdate(
+                { _id: id }, // find a document with _id equal to roomId
+                { $push: { booked_dates: { $each: dates } } }, 
+                { new: true }
+              );
+            return 'success'
+        } catch(error) {
+            return error.message
         }
     }
 

@@ -14,7 +14,7 @@ export class BookingsController {
 
   @Get('available-rooms')
   getAvailableRooms(@Request() req) {
-    return this.bookingsService.
+    return this.bookingsService.checkAvailability(req.headers)
   }
 
 

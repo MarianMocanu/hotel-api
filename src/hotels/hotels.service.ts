@@ -41,6 +41,11 @@ export class HotelsService {
         }
     }
 
+    async getHotelData(id: string): Promise<Hotel> {
+        const hotelData = await this.hotelModel.findById(id).populate('rooms').populate('services');
+        return hotelData
+    }
+
     async getAll(): Promise<Hotel[]> {
         try {
             const response = await this.hotelModel.find().exec()

@@ -5,6 +5,14 @@ import { Service } from './service.schema';
 
 export type BookingDocument = HydratedDocument<Booking>;
 
+export interface GuestInfo {
+    user_id?: string;
+    name: string;
+    phone: string;
+    email: string;
+    address: object;
+  }
+
 @Schema()
 export class Booking {
   @Prop()
@@ -22,8 +30,8 @@ export class Booking {
   @Prop()
   checkoutDate: Date;
 
-  @Prop()
-  guestInfo: object;
+//   @Prop()
+//   guestInfo: GuestInfo;
 
   @Prop()
   nights: number;

@@ -22,6 +22,11 @@ export class HotelsController {
         return this.hotelsService.delete(id)
     }
 
+    @Get(':id')
+    getHotelData(@Param('id') id: string) {
+        return this.hotelsService.getHotelData(id)
+    }
+
     @Get()
     getAllHotels() {
         return this.hotelsService.getAll()
