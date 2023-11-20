@@ -21,7 +21,8 @@
     "generate:hotels": "node ./src/scripts/populateHotels.js",
     "generate:users": "node ./src/scripts/populateUsers.js",
     "generate:rooms": "node ./src/scripts/populateRooms.js",
-    "generate:db": "npm run generate:users && npm run generate:rooms && npm run generate:hotels"
+    "generate:services": "node ./src/scripts/populateServices.js",
+    "generate:db": "npm run generate:users && npm run generate:rooms && npm run generate:services && npm run generate:hotels"
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",

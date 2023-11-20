@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const { HotelSchema } = require('../../dist/schemas/hotel.schema.js');
 const { RoomSchema } = require('../../dist/schemas/room.schema.js');
+const { ServiceSchema } = require('../../dist/schemas/service.schema.js');
 
 const Hotel = mongoose.model('Hotel', HotelSchema);
 const Room = mongoose.model('Room', RoomSchema);
+const Service = mongoose.model('Service', ServiceSchema);
 
 mongoose
   .connect('mongodb://127.0.0.1:27017/hotel')
@@ -55,11 +57,20 @@ const hotelsData = [
 
 async function populateWithHotels() {
   const rooms = await Room.find();
+  const packages = await Service.find({ type: 'package' });
+  const addons = await Service.find({ type: 'addon' });
   try {
     await Promise.all(
       hotelsData.map(async hotelData => {
         const hotel = new Hotel(hotelData);
         hotel.rooms = getRandomRoomIds(rooms, 10);
+        hotel.services = addons;
+        const randomNum = Math.floor(Math.random() * packages.length);
+        console.log('random number', randomNum);
+        for (let i = 0; i < randomNum; i++) {
+          const randomIndex = Math.floor(Math.random() * packages.length);
+          hotel.services.push(packages[randomIndex]);
+        }
         const savedHotel = await hotel.save();
         console.log('Hotel', savedHotel);
       }),

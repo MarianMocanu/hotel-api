@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { RoomSchema } = require('../../dist/schemas/room.schema.js');
+const { ServiceSchema } = require('../../dist/schemas/service.schema.js');
 
-const Room = mongoose.model('Room', RoomSchema);
+const Service = mongoose.model('Service', ServiceSchema);
 
 const servicesData = [
   {
@@ -14,7 +14,8 @@ const servicesData = [
   {
     title: 'Spa Delight',
     price: 806,
-    description: 'package',
+    description:
+      'Indulge in a luxurious spa experience with our Spa Delight package. This package includes access to all our spa facilities, a personalized spa treatment, and a healthy gourmet meal. Perfect for relaxation and rejuvenation.',
     type: 'package',
   },
   {
@@ -66,10 +67,8 @@ mongoose
   });
 
 async function populateWithRooms() {
-  for (let i = 0; i < 10; i++) {
-    await Room.insertMany(roomsData);
-    console.log(7 * (i + 1), 'rooms created');
-  }
+  await Service.insertMany(servicesData);
+  console.log(servicesData.length, 'services created');
   mongoose.connection.close();
 }
 
