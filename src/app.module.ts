@@ -18,10 +18,11 @@ import { RoomsModule } from './rooms/rooms.module';
 import { roomsProviders } from './rooms/rooms.providers';
 import { ServicesModule } from './services/services.module';
 import { BookingsModule } from './bookings/bookings.module';
+import { AvailableRoomsModule } from './available-rooms/available-rooms.module';
 
 
 @Module({
-  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule, ServicesModule, BookingsModule],
+  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule, ServicesModule, BookingsModule, AvailableRoomsModule],
   controllers: [AppController, AuthController, HotelsController, RoomsController],
   providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, ...roomsProviders, HotelsService, RoomsService],
 })
