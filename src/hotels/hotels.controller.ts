@@ -26,9 +26,16 @@ export class HotelsController {
     getAllHotels() {
         return this.hotelsService.getAll()
     }
+
+
     @Get(':id/rooms')
     getHotelRooms(@Param('id') id: string) {
         return this.hotelsService.getRooms(id)
+    }
+
+    @Get(':id/services')
+    getHotelServices(@Param('id') id: string) {
+        return this.hotelsService.getServices(id)
     }
 
 

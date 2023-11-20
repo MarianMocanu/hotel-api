@@ -56,4 +56,9 @@ export class HotelsService {
         return this.hotelModel.findById(id).populate('rooms');
     }
 
+    async getServices(id: string): Promise<Hotel> {
+        //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
+        return this.hotelModel.findById(id).populate('services');
+    }
+
 }

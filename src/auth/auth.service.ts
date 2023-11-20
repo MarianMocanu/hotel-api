@@ -31,17 +31,15 @@ export class AuthService {
   async getUser(id: string): Promise<Partial<IUser>> {
     try {
       const user = await this.userModel.findById(id);
-        const userRequest = {
-          name: user.name,
-          email: user.email,
-          phone: user.phone ? user.phone : undefined,
-          address: user.address ? user.address : undefined,
-          dob: user.dob ? user.dob : undefined,
-        }
-        
-        return userRequest
-      
-      
+      const userRequest = {
+        name: user.name,
+        email: user.email,
+        phone: user.phone ? user.phone : undefined,
+        address: user.address ? user.address : undefined,
+        dob: user.dob ? user.dob : undefined,
+      }
+
+      return userRequest
     } catch (error) {
       return error.message;
       return new UnauthorizedException('Login failed');
