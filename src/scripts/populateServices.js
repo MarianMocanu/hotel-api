@@ -1,3 +1,8 @@
+const mongoose = require('mongoose');
+const { RoomSchema } = require('../../dist/schemas/room.schema.js');
+
+const Room = mongoose.model('Room', RoomSchema);
+
 const servicesData = [
   {
     title: 'Pampering stay',
@@ -51,11 +56,6 @@ const servicesData = [
   },
 ];
 
-const mongoose = require('mongoose');
-const { HotelSchema } = require('../../dist/schemas/hotel.schema.js');
-
-const Hotel = mongoose.model('Hotel', HotelSchema);
-
 mongoose
   .connect('mongodb://127.0.0.1:27017/hotel')
   .then(() => {
@@ -65,8 +65,11 @@ mongoose
     console.log(err);
   });
 
-async function populateWithHotels() {
-  const hotel = new Hotel({});
+async function populateWithRooms() {
+  for (let i = 0; i < 10; i++) {
+    await Room.insertMany(roomsData);
+    console.log(7 * (i + 1), 'rooms created');
+  }
   mongoose.connection.close();
 }
 
@@ -74,4 +77,4 @@ mongoose.connection.on('error', err => {
   console.log(err);
 });
 
-mongoose.connection.once('open', populateWithHotels);
+mongoose.connection.once('open', populateWithRooms);
