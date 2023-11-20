@@ -1,13 +1,12 @@
 import { BadRequestException, Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDTO } from 'src/dtos/create-room.dto';
-import { HotelsService } from 'src/hotels/hotels.service';
 
 @Controller('rooms')
 export class RoomsController {
 
 
-    constructor(private readonly roomsService: RoomsService, private readonly hotelsService: HotelsService) { }
+    constructor(private readonly roomsService: RoomsService) { }
 
 
     @Post()
