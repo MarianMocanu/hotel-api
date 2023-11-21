@@ -14,6 +14,7 @@ async function bootstrap() {
   });
   const port = process.env.PORT
   await app.listen(port);
+  console.log(new Date())
   console.log(`Server is running and listening on port ${port}`);
 }
 bootstrap();

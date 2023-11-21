@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Put, Param, Delete, Get } from '@nestjs/common';
 import { HotelsService } from './hotels.service';
 import { CreateHotelDTO } from 'src/dtos/create-hotel.dto';
+import { ObjectId } from 'mongoose';
 
 @Controller('hotels')
 export class HotelsController {
@@ -22,6 +23,11 @@ export class HotelsController {
         return this.hotelsService.delete(id)
     }
 
+    @Get(':id')
+    getHotelData(@Param('id') id: string) {
+        return this.hotelsService.getHotelData(id)
+    }
+
     @Get()
     getAllHotels() {
         return this.hotelsService.getAll()
@@ -29,12 +35,12 @@ export class HotelsController {
 
 
     @Get(':id/rooms')
-    getHotelRooms(@Param('id') id: string) {
+    getHotelRooms(@Param('id') id: ObjectId) {
         return this.hotelsService.getRooms(id)
     }
 
     @Get(':id/services')
-    getHotelServices(@Param('id') id: string) {
+    getHotelServices(@Param('id') id: ObjectId) {
         return this.hotelsService.getServices(id)
     }
 

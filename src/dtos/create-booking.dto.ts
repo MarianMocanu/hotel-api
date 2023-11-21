@@ -1,3 +1,4 @@
+import { Prop } from '@nestjs/mongoose';
 import {
   IsArray,
   IsDate,
@@ -8,6 +9,8 @@ import {
   IsString,
 } from 'class-validator';
 import { ObjectId } from 'mongoose';
+import { GuestInfo } from 'src/schemas/booking.schema';
+
 
 export class CreateBookingDTO {
   // @IsNotEmpty()
@@ -16,7 +19,7 @@ export class CreateBookingDTO {
 
   // @IsNotEmpty()
   @IsMongoId({ each: true })
-  rooms: ObjectId[];
+  room_id: ObjectId;
 
   // @IsNotEmpty()
   @IsArray()
@@ -31,9 +34,15 @@ export class CreateBookingDTO {
   @IsDate()
   checkoutDate: Date;
 
-  @IsNotEmpty()
-  @IsObject()
-  guestInfo: object;
+  // i need to fix the geust info object
+
+// //   @IsNotEmpty()
+//   @IsObject()
+//   @Prop({ type: { name: String, phone: String, email: String, address: String } }) // replace with actual schema
+// guestInfo: GuestInfo;
+
+
+
 
   @IsNotEmpty()
   @IsNumber()
@@ -52,22 +61,22 @@ export class CreateBookingDTO {
 
   constructor(
     hotel_id: ObjectId,
-    rooms: ObjectId[],
+    room_id: ObjectId,
     services: ObjectId[],
     checkinDate: Date,
     checkoutDate: Date,
-    guestInfo: object,
+    // guestInfo: GuestInfo,
     nights: number,
     guestsAmount: number,
     totalAmount: number,
     comments: string,
   ) {
     this.hotel_id = hotel_id;
-    this.rooms = rooms;
+    this.room_id = room_id;
     this.services = services;
     this.checkinDate = checkinDate;
     this.checkoutDate = checkoutDate;
-    this.guestInfo = guestInfo;
+    // this.guestInfo = guestInfo;
     this.nights = nights;
     this.guestsAmount = guestsAmount;
     this.totalAmount = totalAmount;
