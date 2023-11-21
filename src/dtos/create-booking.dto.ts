@@ -34,15 +34,10 @@ export class CreateBookingDTO {
   @IsDate()
   checkoutDate: Date;
 
-  // i need to fix the geust info object
-
-// //   @IsNotEmpty()
-//   @IsObject()
-//   @Prop({ type: { name: String, phone: String, email: String, address: String } }) // replace with actual schema
-// guestInfo: GuestInfo;
-
-
-
+  @IsNotEmpty()
+  @IsObject()
+  @Prop({ type: GuestInfo })
+  guestInfo: GuestInfo;
 
   @IsNotEmpty()
   @IsNumber()
@@ -65,7 +60,7 @@ export class CreateBookingDTO {
     services: ObjectId[],
     checkinDate: Date,
     checkoutDate: Date,
-    // guestInfo: GuestInfo,
+    guestInfo: GuestInfo,
     nights: number,
     guestsAmount: number,
     totalAmount: number,
@@ -76,7 +71,7 @@ export class CreateBookingDTO {
     this.services = services;
     this.checkinDate = checkinDate;
     this.checkoutDate = checkoutDate;
-    // this.guestInfo = guestInfo;
+    this.guestInfo = guestInfo;
     this.nights = nights;
     this.guestsAmount = guestsAmount;
     this.totalAmount = totalAmount;
