@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { FilterQuery, Model, UpdateQuery } from 'mongoose';
+import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
 import { CreateHotelDTO } from 'src/dtos/create-hotel.dto';
 import { Hotel } from 'src/schemas/hotel.schema';
 import { Room } from 'src/schemas/room.schema';
@@ -56,12 +56,12 @@ export class HotelsService {
         }
     }
 
-    async getRooms(id: string): Promise<Hotel> {
+    async getRooms(id: ObjectId): Promise<Hotel> {
         //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
         return this.hotelModel.findById(id).populate('rooms');
     }
 
-    async getServices(id: string): Promise<Hotel> {
+    async getServices(id: ObjectId): Promise<Hotel> {
         //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
         return this.hotelModel.findById(id).populate('services');
     }

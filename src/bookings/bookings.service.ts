@@ -18,27 +18,37 @@ interface BookingData {
 export class BookingsService {
   constructor(
     @Inject('BOOKING_MODEL')
-    private hotelModel: Model<Booking>,
+    private bookingModel: Model<Booking>,
     private hotelsService: HotelsService,
     private roomsService: RoomsService,
   ) {}
 
   async create(createBookingDTO: CreateBookingDTO) {
     try {
-      const createdBooking = await new this.hotelModel(createBookingDTO);
-      const checkin = new Date(createBookingDTO.checkinDate)
-      const checkout = new Date(createBookingDTO.checkoutDate)
-      const dates = getDatesBetweenDates( checkin, checkout );
-        
-        // add booked dates to the hotel
+      const createdBooking = await new this.bookingModel(createBookingDTO);
+      const checkin = new Date(createBookingDTO.checkinDate);
+      const checkout = new Date(createBookingDTO.checkoutDate);
+      const dates = getDatesBetweenDates(checkin, checkout);
+
+      // add booked dates to the hotel
       await this.roomsService.bookRoom(createBookingDTO.room_id, dates);
 
       return createdBooking.save();
     } catch (error) {
       console.log(error.message);
-      return error.message
+      return error.message;
     }
   }
+
+  async getAll(): Promise<Booking[]> {
+    try {
+        const response = await this.bookingModel.find().exec()
+        return response
+    }
+    catch (error) {
+        return error.message;
+    }
+}
 
   async checkAvailability(bookingData: BookingData) {
     // get dates in between of checkin and checkout dates
@@ -80,6 +90,15 @@ export class BookingsService {
       }
 
       return { rooms: availableRooms, hotel_services: hotel.services };
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async delete(id: string): Promise<Booking> {
+    try {
+      const response = await this.bookingModel.findByIdAndDelete(id).exec();
+      return response;
     } catch (error) {
       return error.message;
     }
