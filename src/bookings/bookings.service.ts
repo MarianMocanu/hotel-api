@@ -6,6 +6,7 @@ import { Booking } from 'src/schemas/booking.schema';
 import { Room } from 'src/schemas/room.schema';
 import { eachDayOfInterval, format } from 'date-fns';
 import { RoomsService } from 'src/rooms/rooms.service';
+import { AvailableRoomsDTO } from 'src/dtos/available-rooms.dto';
 
 interface BookingData {
   hotel_id: string;
@@ -42,31 +43,30 @@ export class BookingsService {
 
   async getAll(): Promise<Booking[]> {
     try {
-        const response = await this.bookingModel.find().exec()
-        return response
+      const response = await this.bookingModel.find().exec();
+      return response;
+    } catch (error) {
+      return error.message;
     }
-    catch (error) {
-        return error.message;
-    }
-}
+  }
 
-  async checkAvailability(bookingData: BookingData) {
+  async checkAvailability(bookingData: AvailableRoomsDTO) {
     // get dates in between of checkin and checkout dates
-    let checkinDate = new Date(bookingData.checkin_date);
-    let checkoutDate = new Date(bookingData.checkout_date);
+    let checkinDate = new Date(bookingData.checkinDate);
+    let checkoutDate = new Date(bookingData.checkoutDate);
     const dates = getDatesBetweenDates(checkinDate, checkoutDate);
     const datesToString = dates.map(date => format(date, 'yyyy-MM-dd'));
 
     try {
       // get hotel data with all the info - rooms and services
-      const hotel = await this.hotelsService.getHotelData(bookingData.hotel_id);
+      const hotel = await this.hotelsService.getHotelData(bookingData.hotelId);
 
       // check available rooms
 
       const availableRooms: Room[] = [];
 
       for (const room of hotel.rooms) {
-        if (room.maxGuests >= Number(bookingData.guest_amount)) {
+        if (room.maxGuests >= Number(bookingData.guestsAmount)) {
           let isAvailable = true;
 
           for (let bookedDate of room.booked_dates) {

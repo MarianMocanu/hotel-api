@@ -1,11 +1,11 @@
-import { Controller, Post, Body, Get, Request, Delete, Param} from '@nestjs/common';
+import { Controller, Post, Body, Get, Request, Delete, Param } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { CreateBookingDTO } from 'src/dtos/create-booking.dto';
+import { AvailableRoomsDTO } from 'src/dtos/available-rooms.dto';
 
 @Controller('bookings')
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
-
 
   @Post()
   createBooking(@Body() bookingData: CreateBookingDTO) {
@@ -14,20 +14,16 @@ export class BookingsController {
 
   @Get()
   getAllBookings() {
-      return this.bookingsService.getAll()
+    return this.bookingsService.getAll();
   }
 
-  @Get('available-rooms')
-  getAvailableRooms(@Request() req) {
-    return this.bookingsService.checkAvailability(req.headers)
+  @Post('available-rooms')
+  getAvailableRooms(@Body() availableRooms: AvailableRoomsDTO) {
+    return this.bookingsService.checkAvailability(availableRooms);
   }
-
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-      return this.bookingsService.delete(id)
+    return this.bookingsService.delete(id);
   }
-
-
-
 }

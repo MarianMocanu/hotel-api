@@ -6,64 +6,59 @@ import { Room } from 'src/schemas/room.schema';
 
 @Injectable()
 export class HotelsService {
+  constructor(
+    @Inject('HOTEL_MODEL')
+    private hotelModel: Model<Hotel>,
+  ) {}
 
-    constructor(@Inject('HOTEL_MODEL')
-    private hotelModel: Model<Hotel>) { }
+  async create(createHotelDTO: CreateHotelDTO) {
+    const createdHotel = await new this.hotelModel(createHotelDTO);
+    return createdHotel.save();
+  }
 
+  async update(id: string, createHotelDTO: CreateHotelDTO): Promise<Hotel> | null {
+    try {
+      const filter: FilterQuery<Hotel> = { _id: id };
+      const update: UpdateQuery<Hotel> = createHotelDTO;
+      const options = { new: true };
 
-    async create(createHotelDTO: CreateHotelDTO) {
-        const createdHotel = await new this.hotelModel(createHotelDTO);
-        return createdHotel.save();
+      const result = await this.hotelModel.findOneAndReplace(filter, update, options);
+      return result;
+    } catch (error) {
+      return error.message;
     }
+  }
 
-    async update(id: string, createHotelDTO: CreateHotelDTO): Promise<Hotel> | null {
-        try {
-            const filter: FilterQuery<Hotel> = { _id: id };
-            const update: UpdateQuery<Hotel> = createHotelDTO;
-            const options = { new: true }
-
-            const result = await this.hotelModel.findOneAndReplace(filter, update, options)
-            return result;
-        }
-        catch (error) {
-            return error.message;
-        }
-
+  async delete(id: string): Promise<Hotel> {
+    try {
+      const response = await this.hotelModel.findByIdAndDelete(id).exec();
+      return response;
+    } catch (error) {
+      return error.message;
     }
+  }
 
-    async delete(id: string): Promise<Hotel> {
-        try {
-            const response = await this.hotelModel.findByIdAndDelete(id).exec()
-            return response
-        }
-        catch (error) {
-            return error.message;
-        }
+  async getHotelData(id: ObjectId): Promise<Hotel> {
+    const hotelData = await this.hotelModel.findById(id).populate('rooms').populate('services');
+    return hotelData;
+  }
+
+  async getAll(): Promise<Hotel[]> {
+    try {
+      const response = await this.hotelModel.find().exec();
+      return response;
+    } catch (error) {
+      return error.message;
     }
+  }
 
-    async getHotelData(id: string): Promise<Hotel> {
-        const hotelData = await this.hotelModel.findById(id).populate('rooms').populate('services');
-        return hotelData
-    }
+  async getRooms(id: ObjectId): Promise<Hotel> {
+    //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
+    return this.hotelModel.findById(id).populate('rooms');
+  }
 
-    async getAll(): Promise<Hotel[]> {
-        try {
-            const response = await this.hotelModel.find().exec()
-            return response
-        }
-        catch (error) {
-            return error.message;
-        }
-    }
-
-    async getRooms(id: ObjectId): Promise<Hotel> {
-        //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
-        return this.hotelModel.findById(id).populate('rooms');
-    }
-
-    async getServices(id: ObjectId): Promise<Hotel> {
-        //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
-        return this.hotelModel.findById(id).populate('services');
-    }
-
+  async getServices(id: ObjectId): Promise<Hotel> {
+    //we are returning the whole hotel object with the rooms injected inside. should we return only the rooms?
+    return this.hotelModel.findById(id).populate('services');
+  }
 }
