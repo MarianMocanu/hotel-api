@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
-import { CreateRoomDTO } from 'src/dtos/create-room.dto';
+import { RoomDTO } from 'src/dtos/room.dto';
 import { Room } from 'src/schemas/room.schema';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class RoomsService {
     private roomModel: Model<Room>,
   ) {}
 
-  async create(createRoomDTO: CreateRoomDTO): Promise<Room> {
+  async create(createRoomDTO: RoomDTO): Promise<Room> {
     try {
       const createdRoom = await new this.roomModel(createRoomDTO);
       return createdRoom.save();
@@ -19,7 +19,7 @@ export class RoomsService {
     }
   }
 
-  async update(id: string, createRoomDTO: CreateRoomDTO): Promise<Room> | null {
+  async update(id: string, createRoomDTO: RoomDTO): Promise<Room> | null {
     try {
       const filter: FilterQuery<Room> = { _id: id };
       const update: UpdateQuery<Room> = createRoomDTO;

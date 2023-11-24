@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Put, Param, Delete, Get } from '@nestjs/common';
 import { HotelsService } from './hotels.service';
-import { CreateHotelDTO } from 'src/dtos/create-hotel.dto';
+import { HotelDTO } from 'src/dtos/hotel.dto';
 import { ObjectId } from 'mongoose';
 
 @Controller('hotels')
@@ -8,12 +8,12 @@ export class HotelsController {
   constructor(private readonly hotelsService: HotelsService) {}
 
   @Post()
-  createHotel(@Body() hotelData: CreateHotelDTO) {
+  createHotel(@Body() hotelData: HotelDTO) {
     return this.hotelsService.create(hotelData);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() createHotelDTO: CreateHotelDTO) {
+  update(@Param('id') id: string, @Body() createHotelDTO: HotelDTO) {
     return this.hotelsService.update(id, createHotelDTO);
   }
 

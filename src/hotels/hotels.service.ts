@@ -1,6 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
-import { CreateHotelDTO } from 'src/dtos/create-hotel.dto';
+import { HotelDTO } from 'src/dtos/hotel.dto';
 import { Hotel } from 'src/schemas/hotel.schema';
 import { Room } from 'src/schemas/room.schema';
 
@@ -11,12 +11,12 @@ export class HotelsService {
     private hotelModel: Model<Hotel>,
   ) {}
 
-  async create(createHotelDTO: CreateHotelDTO) {
+  async create(createHotelDTO: HotelDTO) {
     const createdHotel = await new this.hotelModel(createHotelDTO);
     return createdHotel.save();
   }
 
-  async update(id: string, createHotelDTO: CreateHotelDTO): Promise<Hotel> | null {
+  async update(id: string, createHotelDTO: HotelDTO): Promise<Hotel> | null {
     try {
       const filter: FilterQuery<Hotel> = { _id: id };
       const update: UpdateQuery<Hotel> = createHotelDTO;

@@ -9,9 +9,6 @@ export class Room {
   name: string;
 
   @Prop()
-  images: string[];
-
-  @Prop()
   type: string;
 
   @Prop()
@@ -29,8 +26,8 @@ export class Room {
   @Prop({ type: [Date] })
   booked_dates: Date[];
 
-  // @Prop({ type: [Date] })
-  // booked_dates: {[key: number]: Date[]};
+  @Prop()
+  description: string;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

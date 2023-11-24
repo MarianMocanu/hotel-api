@@ -1,7 +1,7 @@
 import { IsDate, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
-export class AvailableRoomsDTO {
+export class BookingQueryDTO {
   @IsNotEmpty()
   @IsMongoId()
   hotelId: ObjectId;
@@ -17,10 +17,4 @@ export class AvailableRoomsDTO {
   @IsNotEmpty()
   @IsNumber()
   guestsAmount: number;
-
-  constructor(checkinDate: Date, checkoutDate: Date, guestsAmount: number) {
-    this.checkinDate = checkinDate;
-    this.checkoutDate = checkoutDate;
-    this.guestsAmount = guestsAmount;
-  }
 }

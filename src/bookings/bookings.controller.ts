@@ -1,14 +1,14 @@
 import { Controller, Post, Body, Get, Request, Delete, Param } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
-import { CreateBookingDTO } from 'src/dtos/create-booking.dto';
-import { AvailableRoomsDTO } from 'src/dtos/available-rooms.dto';
+import { BookingDTO } from 'src/dtos/booking.dto';
+import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
 
 @Controller('bookings')
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Post()
-  createBooking(@Body() bookingData: CreateBookingDTO) {
+  createBooking(@Body() bookingData: BookingDTO) {
     return this.bookingsService.create(bookingData);
   }
 
@@ -18,8 +18,8 @@ export class BookingsController {
   }
 
   @Post('available-rooms')
-  getAvailableRooms(@Body() availableRooms: AvailableRoomsDTO) {
-    return this.bookingsService.checkAvailability(availableRooms);
+  getAvailableRooms(@Body() bookingQuery: BookingQueryDTO) {
+    return this.bookingsService.getAvailable(bookingQuery);
   }
 
   @Delete(':id')

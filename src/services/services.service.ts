@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateServiceDTO } from '../dtos/create-service.dto';
+import { ServiceDTO } from '../dtos/service.dto';
 import { FilterQuery, Model, UpdateQuery } from 'mongoose';
 import { Service } from 'src/schemas/service.schema';
 
@@ -10,7 +10,7 @@ export class ServicesService {
     private serviceModel: Model<Service>,
   ) {}
 
-  async create(createServiceDTO: CreateServiceDTO): Promise<Service> {
+  async create(createServiceDTO: ServiceDTO): Promise<Service> {
     try {
       const createdService = await new this.serviceModel(createServiceDTO);
       return createdService.save();
@@ -19,7 +19,7 @@ export class ServicesService {
     }
   }
 
-  async update(id: string, createServiceDTO: CreateServiceDTO): Promise<Service> | null {
+  async update(id: string, createServiceDTO: ServiceDTO): Promise<Service> | null {
     try {
       const filter: FilterQuery<Service> = { _id: id };
       const update: UpdateQuery<Service> = createServiceDTO;

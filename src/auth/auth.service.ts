@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
 import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDTO } from '../dtos/create-user.dto';
-import { LoginUserDto } from 'src/dtos/login-user.dto';
+import { CreateUserDTO } from '../dtos/user.dto';
+import { LoginUserDto } from 'src/dtos/user.dto';
 import { IUser } from '../schemas/user.schema';
 import * as jwt from 'jsonwebtoken';
 
@@ -9,8 +9,8 @@ import * as jwt from 'jsonwebtoken';
 export class AuthService {
   constructor(
     @Inject('USER_MODEL')
-    private userModel: Model<IUser>
-  ) { }
+    private userModel: Model<IUser>,
+  ) {}
 
   async signup(createUserDTO: CreateUserDTO): Promise<IUser> {
     const createdUser = new this.userModel(createUserDTO);
@@ -27,7 +27,6 @@ export class AuthService {
     return new UnauthorizedException('Invalid token');
   }
 
-
   async getUser(id: string): Promise<Partial<IUser>> {
     try {
       const user = await this.userModel.findById(id);
@@ -37,13 +36,11 @@ export class AuthService {
         phone: user.phone ? user.phone : undefined,
         address: user.address ? user.address : undefined,
         dob: user.dob ? user.dob : undefined,
-      }
+      };
 
-      return userRequest
+      return userRequest;
     } catch (error) {
-      return error.message;
       return new UnauthorizedException('Login failed');
-
     }
   }
 }

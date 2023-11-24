@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateServiceDTO {
+export class ServiceDTO {
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -16,11 +16,4 @@ export class CreateServiceDTO {
   @IsNotEmpty()
   @IsString()
   type: string;
-
-  constructor(title: string, price: number, description: string, type: string) {
-    this.title = title;
-    this.price = price;
-    this.description = description;
-    this.type = type;
-  }
 }

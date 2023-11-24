@@ -11,13 +11,12 @@ import {
 import { ObjectId } from 'mongoose';
 import { GuestInfo } from 'src/schemas/booking.schema';
 
-
-export class CreateBookingDTO {
-  // @IsNotEmpty()
+export class BookingDTO {
+  @IsNotEmpty()
   @IsMongoId()
   hotel_id: ObjectId;
 
-  // @IsNotEmpty()
+  @IsNotEmpty()
   @IsMongoId({ each: true })
   room_id: ObjectId;
 
@@ -39,7 +38,6 @@ export class CreateBookingDTO {
   @Prop({ type: GuestInfo })
   guestInfo: GuestInfo;
 
-  @IsNotEmpty()
   @IsNumber()
   nights: number;
 
@@ -47,34 +45,9 @@ export class CreateBookingDTO {
   @IsNumber()
   guestsAmount: number;
 
-  @IsNotEmpty()
   @IsNumber()
   totalAmount: number;
 
   @IsString()
   comments: string;
-
-  constructor(
-    hotel_id: ObjectId,
-    room_id: ObjectId,
-    services: ObjectId[],
-    checkinDate: Date,
-    checkoutDate: Date,
-    guestInfo: GuestInfo,
-    nights: number,
-    guestsAmount: number,
-    totalAmount: number,
-    comments: string,
-  ) {
-    this.hotel_id = hotel_id;
-    this.room_id = room_id;
-    this.services = services;
-    this.checkinDate = checkinDate;
-    this.checkoutDate = checkoutDate;
-    this.guestInfo = guestInfo;
-    this.nights = nights;
-    this.guestsAmount = guestsAmount;
-    this.totalAmount = totalAmount;
-    this.comments = comments;
-  }
 }

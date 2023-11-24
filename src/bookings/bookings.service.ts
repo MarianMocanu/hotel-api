@@ -1,19 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CreateBookingDTO } from 'src/dtos/create-booking.dto';
+import { BookingDTO } from 'src/dtos/booking.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { Booking } from 'src/schemas/booking.schema';
 import { Room } from 'src/schemas/room.schema';
 import { eachDayOfInterval, format } from 'date-fns';
 import { RoomsService } from 'src/rooms/rooms.service';
-import { AvailableRoomsDTO } from 'src/dtos/available-rooms.dto';
-
-interface BookingData {
-  hotel_id: string;
-  guest_amount: number;
-  checkin_date: string;
-  checkout_date: string;
-}
+import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
 
 @Injectable()
 export class BookingsService {
@@ -24,15 +17,15 @@ export class BookingsService {
     private roomsService: RoomsService,
   ) {}
 
-  async create(createBookingDTO: CreateBookingDTO) {
+  async create(booking: BookingDTO) {
     try {
-      const createdBooking = await new this.bookingModel(createBookingDTO);
-      const checkin = new Date(createBookingDTO.checkinDate);
-      const checkout = new Date(createBookingDTO.checkoutDate);
+      const createdBooking = new this.bookingModel(booking);
+      const checkin = new Date(booking.checkinDate);
+      const checkout = new Date(booking.checkoutDate);
       const dates = getDatesBetweenDates(checkin, checkout);
 
       // add booked dates to the hotel
-      await this.roomsService.bookRoom(createBookingDTO.room_id, dates);
+      await this.roomsService.bookRoom(booking.room_id, dates);
 
       return createdBooking.save();
     } catch (error) {
@@ -50,45 +43,35 @@ export class BookingsService {
     }
   }
 
-  async checkAvailability(bookingData: AvailableRoomsDTO) {
+  async getAvailable(query: BookingQueryDTO) {
     // get dates in between of checkin and checkout dates
-    let checkinDate = new Date(bookingData.checkinDate);
-    let checkoutDate = new Date(bookingData.checkoutDate);
+    let checkinDate = new Date(query.checkinDate);
+    let checkoutDate = new Date(query.checkoutDate);
     const dates = getDatesBetweenDates(checkinDate, checkoutDate);
     const datesToString = dates.map(date => format(date, 'yyyy-MM-dd'));
 
     try {
       // get hotel data with all the info - rooms and services
-      const hotel = await this.hotelsService.getHotelData(bookingData.hotelId);
+      const hotel = await this.hotelsService.getHotelData(query.hotelId);
 
       // check available rooms
-
       const availableRooms: Room[] = [];
 
       for (const room of hotel.rooms) {
-        if (room.maxGuests >= Number(bookingData.guestsAmount)) {
+        if (room.maxGuests >= Number(query.guestsAmount)) {
           let isAvailable = true;
-
           for (let bookedDate of room.booked_dates) {
             let bookedDateString = format(bookedDate, 'yyyy-MM-dd');
-
             if (datesToString.includes(bookedDateString)) {
-              console.log('taken', bookedDateString);
-
               isAvailable = false;
-              console.log('room', room.name, 'NOT available');
               break;
             }
           }
-
           if (isAvailable) {
-            console.log('room', room.name, 'available');
-
             availableRooms.push(room);
           }
         }
       }
-
       return { rooms: availableRooms, hotel_services: hotel.services };
     } catch (error) {
       return error.message;

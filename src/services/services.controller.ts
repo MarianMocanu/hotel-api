@@ -1,18 +1,18 @@
 import { Controller, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { ServicesService } from './services.service';
-import { CreateServiceDTO } from '../dtos/create-service.dto';
+import { ServiceDTO } from '../dtos/service.dto';
 
 @Controller('services')
 export class ServicesController {
   constructor(private readonly servicesService: ServicesService) {}
 
   @Post()
-  createService(@Body() serviceData: CreateServiceDTO) {
+  createService(@Body() serviceData: ServiceDTO) {
     return this.servicesService.create(serviceData);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() createServiceDto: CreateServiceDTO) {
+  update(@Param('id') id: string, @Body() createServiceDto: ServiceDTO) {
     return this.servicesService.update(id, createServiceDto);
   }
 

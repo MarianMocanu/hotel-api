@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
-import { Room } from './room.schema';
 import { Service } from './service.schema';
 
 export type BookingDocument = HydratedDocument<Booking>;
@@ -52,7 +51,7 @@ export class Booking {
   @Prop()
   checkoutDate: Date;
 
-  @Prop({ type: GuestInfo})
+  @Prop({ type: GuestInfo })
   guestInfo: GuestInfo;
 
   @Prop()
