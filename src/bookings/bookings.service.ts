@@ -29,7 +29,7 @@ export class BookingsService {
 
       return createdBooking.save();
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
       return error.message;
     }
   }
