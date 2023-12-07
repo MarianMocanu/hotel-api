@@ -5,9 +5,7 @@ import { EventVenue } from 'src/schemas/event-venue.schema';
 
 @Injectable()
 export class EventVenuesService {
-
   constructor(@Inject('EVENT_VENUE_MODEL') private eventVenueModel: Model<EventVenue>) {}
-
 
   create(eventVenueDTO: EventVenueDTO): Promise<EventVenue> {
     try {
@@ -21,9 +19,9 @@ export class EventVenuesService {
   async getAll(): Promise<EventVenue[]> {
     try {
       const response = await this.eventVenueModel.find().exec();
-      return response
-    } catch(error) {
-      return error.message
+      return response;
+    } catch (error) {
+      return error.message;
     }
   }
 
@@ -33,23 +31,23 @@ export class EventVenuesService {
 
   async update(id: string, eventVenueDTO: EventVenueDTO): Promise<EventVenue> {
     try {
-      const filter: FilterQuery<EventVenue> = {_id: id};
+      const filter: FilterQuery<EventVenue> = { _id: id };
       const update: UpdateQuery<EventVenue> = eventVenueDTO;
-      const options = {new: true};
+      const options = { new: true };
 
       const result = await this.eventVenueModel.findOneAndReplace(filter, update, options);
-      return result
-    } catch(error) {
-      return error.message
-    } 
+      return result;
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async delete(id: string): Promise<EventVenue> {
     try {
       const response = await this.eventVenueModel.findByIdAndDelete(id).exec();
-      return response
-    } catch(error) {
-      return error.message
+      return response;
+    } catch (error) {
+      return error.message;
     }
   }
 }
