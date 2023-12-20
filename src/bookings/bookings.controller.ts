@@ -21,6 +21,7 @@ export class BookingsController {
   getAvailableRooms(@Body() bookingQuery: BookingQueryDTO) {
     return this.bookingsService.getAvailable(bookingQuery);
   }
+  //holaaaaa
 
   @Delete(':id')
   delete(@Param('id') id: string) {
