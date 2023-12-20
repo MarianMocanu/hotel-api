@@ -20,11 +20,13 @@ import { bookingsProviders } from './bookings/bookings.providers';
 import { ServicesModule } from './services/services.module';
 import { BookingsModule } from './bookings/bookings.module';
 import { EventVenuesModule } from './event-venues/event-venues.module';
+import { EventBookingModule } from './event-booking/event-booking.module';
+import { eventBookingProviders } from './event-booking/event-booking.providers';
 
 
 @Module({
-  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule, ServicesModule, BookingsModule, EventVenuesModule],
+  imports: [AuthModule, DatabaseModule, HotelsModule, RoomsModule, ServicesModule, BookingsModule, EventVenuesModule, EventBookingModule],
   controllers: [AppController, AuthController, HotelsController, RoomsController],
-  providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, ...roomsProviders, ...bookingsProviders, HotelsService, RoomsService],
+  providers: [AppService, AuthService, ...usersProviders, ...hotelsProviders, ...roomsProviders, ...bookingsProviders, ...eventBookingProviders, HotelsService, RoomsService],
 })
 export class AppModule {}

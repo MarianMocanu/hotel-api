@@ -8,5 +8,6 @@ import { eventVenuesProviders } from './event-venues.providers';
   imports: [DatabaseModule],
   controllers: [EventVenuesController],
   providers: [EventVenuesService, ...eventVenuesProviders],
+  exports: [EventVenuesService]
 })
 export class EventVenuesModule {}
