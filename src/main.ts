@@ -13,5 +13,6 @@ async function bootstrap() {
   const port = process.env.PORT || 4200;
   await app.listen(port);
   console.log(`Server is running and listening on port ${port}`);
+  console.log(new Date());
 }
 bootstrap();
