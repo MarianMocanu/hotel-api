@@ -31,15 +31,18 @@ export class EventBookingDTO {
   date: Date;
 
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   guest_amount: number;
-
-  @IsArray()
-  time_slot: string[];
 
   @IsNotEmpty()
   @IsString()
   type: string;
+
+  @IsString()
+  start_time: string;
+
+  @IsString()
+  end_time: string;
 
   @IsString()
   corporation: string;

@@ -31,6 +31,12 @@ export class EventBooking {
   guest_amount: number;
 
   @Prop()
+  start_time: string;
+
+  @Prop()
+  end_time: string;
+
+  @Prop()
   corporation: string;
 
   @Prop()
