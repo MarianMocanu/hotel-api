@@ -23,8 +23,8 @@ export class EventBookingDTO {
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  tel: number;
+  @IsString()
+  phone: string;
 
   @IsNotEmpty()
   @IsDate()

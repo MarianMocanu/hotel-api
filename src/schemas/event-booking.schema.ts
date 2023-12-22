@@ -25,7 +25,7 @@ export class EventBooking {
   email: string;
 
   @Prop()
-  tel: number;
+  phone: string;
 
   @Prop()
   guest_amount: number;
