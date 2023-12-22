@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class EventQueryDTO {
@@ -14,8 +14,11 @@ export class EventQueryDTO {
   @IsString()
   guest_amount: number;
 
-  @IsArray()
-  time_slot: string[];
+  @IsString()
+  start_time: string;
+
+  @IsString()
+  end_time: string;
 
   @IsNotEmpty()
   @IsString()
