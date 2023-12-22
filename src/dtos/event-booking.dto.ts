@@ -12,7 +12,7 @@ import { ObjectId } from 'mongoose';
 export class EventBookingDTO {
   @IsNotEmpty()
   @IsMongoId()
-  hotel_id: ObjectId;
+  venue_id: ObjectId;
 
   @IsNotEmpty()
   @IsString()
