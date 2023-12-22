@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
 import { RoomDTO } from 'src/dtos/room.dto';
-import { Room } from 'src/schemas/room.schema';
+import { IRoom as Room } from 'src/schemas/room.schema';
 
 @Injectable()
 export class RoomsService {

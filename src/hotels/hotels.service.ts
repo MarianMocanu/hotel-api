@@ -2,7 +2,6 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { FilterQuery, Model, ObjectId, UpdateQuery } from 'mongoose';
 import { HotelDTO } from 'src/dtos/hotel.dto';
 import { Hotel } from 'src/schemas/hotel.schema';
-import { Room } from 'src/schemas/room.schema';
 
 @Injectable()
 export class HotelsService {

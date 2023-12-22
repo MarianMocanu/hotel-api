@@ -8,13 +8,17 @@ export class BookingQueryDTO {
 
   @IsNotEmpty()
   @IsDate()
-  checkinDate: Date;
+  checkinDate: string;
 
   @IsNotEmpty()
   @IsDate()
-  checkoutDate: Date;
+  checkoutDate: string;
 
   @IsNotEmpty()
   @IsNumber()
-  guestsAmount: number;
+  numberOfRooms: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  numberOfGuests: number;
 }

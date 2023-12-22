@@ -1,8 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { eachDayOfInterval, format, parseISO } from 'date-fns';
 import { HydratedDocument } from 'mongoose';
 
-export type RoomDocument = HydratedDocument<Room>;
-
+export interface IRoom extends RoomDocument {
+  readonly name: string;
+  readonly type: string;
+  readonly size: number;
+  readonly facilities: string[];
+  readonly price: number;
+  readonly maxGuests: number;
+  readonly booked_dates: string[];
+  readonly description: string;
+  isAvailableForPeriod(checkin: string, checkout: string): boolean;
+}
 @Schema()
 export class Room {
   @Prop()
@@ -24,10 +34,23 @@ export class Room {
   maxGuests: number;
 
   @Prop({ type: [Date] })
-  booked_dates: Date[];
+  booked_dates: string[];
 
   @Prop()
   description: string;
 }
 
+export type RoomDocument = HydratedDocument<Room>;
 export const RoomSchema = SchemaFactory.createForClass(Room);
+
+RoomSchema.methods.isAvailableForPeriod = function (checkin: string, checkout: string) {
+  const interval = eachDayOfInterval({ start: parseISO(checkin), end: parseISO(checkout) });
+  interval.pop();
+  const dates = interval.map(date => format(date, 'yyyy-MM-dd'));
+  dates.forEach(date => {
+    if (this.booked_dates.includes(date)) {
+      return false;
+    }
+  });
+  return true;
+};

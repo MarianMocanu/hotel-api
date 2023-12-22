@@ -8,7 +8,6 @@ export interface IUser extends Document {
   readonly address: string | undefined;
   readonly password: string;
   readonly dob: Date | undefined;
-
   comparePassword(password: string): Promise<boolean>;
 }
 

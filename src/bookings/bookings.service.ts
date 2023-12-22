@@ -3,8 +3,8 @@ import { Model } from 'mongoose';
 import { BookingDTO } from 'src/dtos/booking.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { Booking } from 'src/schemas/booking.schema';
-import { Room } from 'src/schemas/room.schema';
-import { eachDayOfInterval, format } from 'date-fns';
+import { IRoom as Room } from 'src/schemas/room.schema';
+import { eachDayOfInterval } from 'date-fns';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
 
@@ -44,35 +44,22 @@ export class BookingsService {
   }
 
   async getAvailable(query: BookingQueryDTO) {
-    // get dates in between of checkin and checkout dates
-    let checkinDate = new Date(query.checkinDate);
-    let checkoutDate = new Date(query.checkoutDate);
-    const dates = getDatesBetweenDates(checkinDate, checkoutDate);
-    const datesToString = dates.map(date => format(date, 'yyyy-MM-dd'));
-
     try {
-      // get hotel data with all the info - rooms and services
       const hotel = await this.hotelsService.getHotelData(query.hotelId);
-
-      // check available rooms
       const availableRooms: Room[] = [];
-
-      for (const room of hotel.rooms) {
-        if (room.maxGuests >= Number(query.guestsAmount)) {
-          let isAvailable = true;
-          for (let bookedDate of room.booked_dates) {
-            let bookedDateString = format(bookedDate, 'yyyy-MM-dd');
-            if (datesToString.includes(bookedDateString)) {
-              isAvailable = false;
-              break;
-            }
-          }
-          if (isAvailable) {
-            availableRooms.push(room);
-          }
+      hotel.rooms.forEach(room => {
+        if (room.isAvailableForPeriod(query.checkinDate, query.checkoutDate)) {
+          availableRooms.push(room);
         }
+      });
+      if (
+        availableRooms.length >= query.numberOfRooms &&
+        availableRooms.reduce((total, room) => total + room.maxGuests, 0) >= query.numberOfGuests
+      ) {
+        return { rooms: availableRooms, hotel_services: hotel.services };
+      } else {
+        return {};
       }
-      return { rooms: availableRooms, hotel_services: hotel.services };
     } catch (error) {
       return error.message;
     }
