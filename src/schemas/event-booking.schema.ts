@@ -12,9 +12,6 @@ export class EventBooking {
   date: Date;
 
   @Prop()
-  time_slot: string[];
-
-  @Prop()
   type: string;
 
   @Prop()
