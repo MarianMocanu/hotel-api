@@ -32,3 +32,22 @@ export class LoginUserDto {
   @IsString()
   password: string;
 }
+
+export class EditUserDTO {
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @IsString()
+  phone: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  address: string;
+
+  @IsDate()
+  dob: Date;
+}

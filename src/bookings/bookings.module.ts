@@ -7,10 +7,12 @@ import { HotelsService } from 'src/hotels/hotels.service';
 import { hotelsProviders } from 'src/hotels/hotels.providers';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { roomsProviders } from 'src/rooms/rooms.providers';
+import { AuthService } from 'src/auth/auth.service';
+import { usersProviders } from 'src/auth/auth.providers';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [BookingsController],
-  providers: [BookingsService, ...bookingsProviders, HotelsService, ...hotelsProviders, RoomsService, ...roomsProviders],
+  providers: [BookingsService, ...bookingsProviders, HotelsService, ...hotelsProviders, RoomsService, ...roomsProviders, AuthService, ...usersProviders],
 })
 export class BookingsModule {}
