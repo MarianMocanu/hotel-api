@@ -19,7 +19,7 @@ class Address {
 @Schema({ _id: false })
 export class GuestInfo {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  user_id: ObjectId;
+  userId: string;
 
   @Prop()
   name: string;
@@ -39,11 +39,11 @@ export class Booking {
   @Prop()
   hotel_id: string;
 
-  @Prop()
-  room_id: string;
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }] })
+  rooms: string[];
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Service' }] })
-  services: Service[];
+  @Prop({ type: [[{ type: mongoose.Schema.Types.ObjectId, ref: 'Service' }]] })
+  services: string[][];
 
   @Prop()
   checkinDate: Date;

@@ -1,17 +1,16 @@
-import { IsDate, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import { IsDateString, IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class BookingQueryDTO {
   @IsNotEmpty()
   @IsMongoId()
-  hotelId: ObjectId;
+  hotelId: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   checkinDate: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   checkoutDate: string;
 
   @IsNotEmpty()

@@ -4,9 +4,10 @@ import { BookingDTO } from 'src/dtos/booking.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { Booking } from 'src/schemas/booking.schema';
 import { IRoom as Room } from 'src/schemas/room.schema';
-import { eachDayOfInterval } from 'date-fns';
+import { differenceInDays, eachDayOfInterval, format } from 'date-fns';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
+import { ServicesService } from 'src/services/services.service';
 
 @Injectable()
 export class BookingsService {
@@ -15,19 +16,51 @@ export class BookingsService {
     private bookingModel: Model<Booking>,
     private hotelsService: HotelsService,
     private roomsService: RoomsService,
+    private servicesService: ServicesService,
   ) {}
 
-  async create(booking: BookingDTO) {
+  async create(data: BookingDTO) {
+    const checkin = new Date(data.checkinDate);
+    const checkout = new Date(data.checkoutDate);
     try {
-      const createdBooking = new this.bookingModel(booking);
-      const checkin = new Date(booking.checkinDate);
-      const checkout = new Date(booking.checkoutDate);
+      // create booking
+      const booking = new this.bookingModel(data);
+      booking.rooms = [];
+      data.rooms.forEach((room, index) => {
+        booking.rooms[index] = room.roomId;
+        booking.services[index] = [room.packageId];
+        if (room.addonsIds && room.addonsIds.length > 0) {
+          booking.services[index] = [...booking.services[index], ...room.addonsIds];
+        }
+      });
+      booking.guestInfo = data.guest;
+      booking.nights = differenceInDays(checkout, checkin);
+      booking.guestsAmount = data.guestsAmount;
+
+      // calculate total amount
+      booking.totalAmount = 0;
+      const roomCalculations = booking.rooms.map(async (roomId, index) => {
+        const room = await this.roomsService.getRoomById(roomId);
+        booking.totalAmount += room.price * booking.nights;
+
+        const serviceCalculations = booking.services[index].map(async serviceId => {
+          const service = await this.servicesService.getById(serviceId);
+          booking.totalAmount +=
+            service.type === 'package' ? service.price * booking.nights : service.price;
+        });
+
+        await Promise.all(serviceCalculations);
+      });
+      await Promise.all(roomCalculations);
+
+      // book rooms
       const dates = getDatesBetweenDates(checkin, checkout);
+      booking.rooms.forEach(async roomId => {
+        await this.roomsService.bookRoom(roomId, dates);
+      });
 
-      // add booked dates to the hotel
-      await this.roomsService.bookRoom(booking.room_id, dates);
-
-      return createdBooking.save();
+      // save booking
+      return booking.save();
     } catch (error) {
       console.error(error.message);
       return error.message;
@@ -58,7 +91,7 @@ export class BookingsService {
       ) {
         return { rooms: availableRooms, hotel_services: hotel.services };
       } else {
-        return {};
+        return { rooms: [], hotel_services: hotel.services };
       }
     } catch (error) {
       return error.message;
@@ -79,5 +112,5 @@ function getDatesBetweenDates(startDate: Date, endDate: Date) {
   const dates = eachDayOfInterval({ start: startDate, end: endDate });
   //delete the last day as doesnt count as night at the hotel
   dates.pop();
-  return dates;
+  return dates.map(date => format(date, 'yyyy-MM-dd'));
 }

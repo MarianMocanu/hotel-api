@@ -9,7 +9,7 @@ export interface IRoom extends RoomDocument {
   readonly facilities: string[];
   readonly price: number;
   readonly maxGuests: number;
-  readonly booked_dates: string[];
+  readonly booked_dates: Date[];
   readonly description: string;
   isAvailableForPeriod(checkin: string, checkout: string): boolean;
 }
@@ -34,7 +34,7 @@ export class Room {
   maxGuests: number;
 
   @Prop({ type: [Date] })
-  booked_dates: string[];
+  booked_dates: Date[];
 
   @Prop()
   description: string;
@@ -47,10 +47,6 @@ RoomSchema.methods.isAvailableForPeriod = function (checkin: string, checkout: s
   const interval = eachDayOfInterval({ start: parseISO(checkin), end: parseISO(checkout) });
   interval.pop();
   const dates = interval.map(date => format(date, 'yyyy-MM-dd'));
-  dates.forEach(date => {
-    if (this.booked_dates.includes(date)) {
-      return false;
-    }
-  });
-  return true;
+  const bookedDates = this.booked_dates.map(date => format(date, 'yyyy-MM-dd'));
+  return !dates.some(date => bookedDates.includes(date));
 };

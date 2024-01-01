@@ -10,6 +10,14 @@ export class ServicesService {
     private serviceModel: Model<Service>,
   ) {}
 
+  async getById(serviceId: string): Promise<Service> {
+    try {
+      return await this.serviceModel.findById(serviceId);
+    } catch (error) {
+      return error.message;
+    }
+  }
+
   async create(createServiceDTO: ServiceDTO): Promise<Service> {
     try {
       const createdService = await new this.serviceModel(createServiceDTO);
