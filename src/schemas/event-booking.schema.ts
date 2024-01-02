@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, ObjectId } from 'mongoose';
-import { Service } from './service.schema';
 
 export type EventBookingDocument = HydratedDocument<EventBooking>;
 
@@ -11,9 +10,6 @@ export class EventBooking {
 
   @Prop()
   date: Date;
-
-  @Prop()
-  time_slot: string[];
 
   @Prop()
   type: string;

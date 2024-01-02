@@ -9,6 +9,8 @@ import { RoomsService } from 'src/rooms/rooms.service';
 import { roomsProviders } from 'src/rooms/rooms.providers';
 import { ServicesService } from 'src/services/services.service';
 import { servicesProviders } from 'src/services/services.providers';
+import { AuthService } from 'src/auth/auth.service';
+import { usersProviders } from 'src/auth/auth.providers';
 
 @Module({
   imports: [DatabaseModule],
@@ -22,6 +24,7 @@ import { servicesProviders } from 'src/services/services.providers';
     ...roomsProviders,
     ServicesService,
     ...servicesProviders,
+    AuthService, ...usersProviders
   ],
 })
 export class BookingsModule {}

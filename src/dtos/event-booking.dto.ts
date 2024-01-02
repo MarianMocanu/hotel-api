@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsDate,
   IsEmail,
   IsMongoId,

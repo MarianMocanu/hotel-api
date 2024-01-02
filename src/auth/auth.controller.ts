@@ -7,9 +7,11 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Put,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDTO, LoginUserDto } from 'src/dtos/user.dto';
+import { CreateUserDTO, EditUserDTO, LoginUserDto } from 'src/dtos/user.dto';
 import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
@@ -19,6 +21,11 @@ export class AuthController {
   @Post('signup')
   signup(@Body() formData: CreateUserDTO) {
     return this.authService.signup(formData);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() editUserDto: EditUserDTO) {
+    return this.authService.update(id, editUserDto);
   }
 
   @HttpCode(HttpStatus.OK)

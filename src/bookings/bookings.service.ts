@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BookingDTO } from 'src/dtos/booking.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
 import { Booking } from 'src/schemas/booking.schema';
@@ -8,6 +8,7 @@ import { differenceInDays, eachDayOfInterval, format } from 'date-fns';
 import { RoomsService } from 'src/rooms/rooms.service';
 import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
 import { ServicesService } from 'src/services/services.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class BookingsService {
@@ -16,6 +17,7 @@ export class BookingsService {
     private bookingModel: Model<Booking>,
     private hotelsService: HotelsService,
     private roomsService: RoomsService,
+    private userService: AuthService
     private servicesService: ServicesService,
   ) {}
 
@@ -59,6 +61,7 @@ export class BookingsService {
         await this.roomsService.bookRoom(roomId, dates);
       });
 
+      booking.guestInfo.user_id && await this.userService.addBookingToUser(booking.guestInfo.user_id, createdBooking._id);
       // save booking
       return booking.save();
     } catch (error) {

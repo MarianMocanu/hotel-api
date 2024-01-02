@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsDate, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 import { ObjectId } from 'mongoose';
 
 export class EventQueryDTO {
