@@ -25,8 +25,21 @@ export class EventVenuesService {
     }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} eventVenue`;
+  async getOther(hotelId: string): Promise<EventVenue[]> {
+    try {
+      const response = await this.eventVenueModel.find({ hotel_id: { $ne: hotelId } });
+      return response;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async findByHotelId(hotelId: string): Promise<EventVenue> {
+    try {
+      return await this.eventVenueModel.findOne({ hotel_id: hotelId });
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async update(id: string, eventVenueDTO: EventVenueDTO): Promise<EventVenue> {

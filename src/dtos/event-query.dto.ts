@@ -1,25 +1,36 @@
-import { IsDate, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import {
+  IsDateString,
+  IsDefined,
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class EventQueryDTO {
+  @IsDefined()
   @IsNotEmpty()
   @IsMongoId()
-  hotel_id: ObjectId;
+  hotel_id: string;
 
+  @IsDefined()
   @IsNotEmpty()
-  @IsDate()
-  date: Date;
+  @IsDateString()
+  date: string;
 
+  @IsDefined()
   @IsNotEmpty()
-  @IsString()
   guest_amount: number;
 
+  @IsOptional()
   @IsString()
   start_time: string;
 
+  @IsOptional()
   @IsString()
   end_time: string;
 
+  @IsDefined()
   @IsNotEmpty()
   @IsString()
   type: string;

@@ -39,14 +39,13 @@ export class AuthService {
         dob: user.dob ? user.dob : undefined,
         bookings: user.bookings ? await this.getBookings(user._id) : undefined,
       };
-      console.log(user);
       return userRequest;
     } catch (error) {
       return new UnauthorizedException('Login failed');
     }
   }
 
-  async addBookingToUser(userID: ObjectId, bookingId: Types.ObjectId): Promise<any> {
+  async addBookingToUser(userID: string, bookingId: Types.ObjectId): Promise<any> {
     const user = await this.userModel.findById(userID);
     if (!user) {
       throw new Error('User not found');

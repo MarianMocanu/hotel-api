@@ -6,7 +6,7 @@ const Hotel = mongoose.model('Hotel', HotelSchema);
 const EventVenue = mongoose.model('EventVenue', EventVenueSchema);
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/event-venues')
+  .connect('mongodb://127.0.0.1:27017/hotel')
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -141,9 +141,8 @@ async function populateWithEventVenues() {
       eventVenuesData.map(async eventVenueData => {
         const eventVenue = new EventVenue(eventVenueData);
         eventVenue.hotel_id = await getHotelId(eventVenueData);
-
         const savedVenue = await eventVenue.save();
-        console.log('Hotel', savedVenue);
+        console.log('Added venue to hotel', savedVenue);
       }),
     );
   } catch (error) {
@@ -153,11 +152,8 @@ async function populateWithEventVenues() {
 }
 
 async function getHotelId(eventVenueData) {
-  const hotels = await Hotel.find();
-
-  const matchHotel = hotels.filter(hotel => hotel.name === eventVenueData.name);
-
-  return matchHotel._id;
+  const hotel = await Hotel.findOne({ name: eventVenueData.name });
+  return hotel._id;
 }
 
 mongoose.connection.on('error', err => {

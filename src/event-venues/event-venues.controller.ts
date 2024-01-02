@@ -18,7 +18,7 @@ export class EventVenuesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.eventVenuesService.findOne(id);
+    return this.eventVenuesService.findByHotelId(id);
   }
 
   @Put(':id')

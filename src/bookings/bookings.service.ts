@@ -17,7 +17,7 @@ export class BookingsService {
     private bookingModel: Model<Booking>,
     private hotelsService: HotelsService,
     private roomsService: RoomsService,
-    private userService: AuthService
+    private userService: AuthService,
     private servicesService: ServicesService,
   ) {}
 
@@ -61,7 +61,8 @@ export class BookingsService {
         await this.roomsService.bookRoom(roomId, dates);
       });
 
-      booking.guestInfo.user_id && await this.userService.addBookingToUser(booking.guestInfo.user_id, createdBooking._id);
+      booking.guestInfo.userId &&
+        (await this.userService.addBookingToUser(booking.guestInfo.userId, booking._id));
       // save booking
       return booking.save();
     } catch (error) {

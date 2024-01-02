@@ -48,12 +48,14 @@ export class EventBookingService {
     }
   }
 
-async getVenues(eventQuery: EventQueryDTO) {
-  const allVenues = await this.eventVenuesService.getAll();
-  const selectedVenue = allVenues.find(venue => String(venue.hotel_id) === String(eventQuery.hotel_id));
-  const otherVenues = allVenues.filter(venue => String(venue.hotel_id) !== String(eventQuery.hotel_id));
-  return { selected_venue: selectedVenue, other_venues: otherVenues };
-}
+  async getVenues(eventQuery: EventQueryDTO) {
+    const otherVenues = await this.eventVenuesService.getOther(eventQuery.hotel_id);
+    const selectedVenue = await this.eventVenuesService.findByHotelId(eventQuery.hotel_id);
+    return {
+      selected_venue: selectedVenue,
+      other_venues: otherVenues,
+    };
+  }
 
   async delete(id: string): Promise<EventBooking> {
     try {
