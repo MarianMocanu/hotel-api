@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { RoomDTO } from 'src/dtos/room.dto';
 

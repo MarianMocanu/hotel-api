@@ -66,7 +66,7 @@ mongoose
     console.log(err);
   });
 
-async function populateWithRooms() {
+async function populateWithServices() {
   await Service.insertMany(servicesData);
   console.log(servicesData.length, 'services created');
   mongoose.connection.close();
@@ -76,4 +76,4 @@ mongoose.connection.on('error', err => {
   console.log(err);
 });
 
-mongoose.connection.once('open', populateWithRooms);
+mongoose.connection.once('open', populateWithServices);

@@ -22,7 +22,8 @@
     "generate:users": "node ./src/scripts/populateUsers.js",
     "generate:rooms": "node ./src/scripts/populateRooms.js",
     "generate:services": "node ./src/scripts/populateServices.js",
-    "generate:db": "npm run generate:users && npm run generate:rooms && npm run generate:services && npm run generate:hotels"
+    "generate:events": "node ./src/scripts/populateEventVenues.js",
+    "generate:db": "npm run generate:users && npm run generate:rooms && npm run generate:services && npm run generate:hotels && npm run generate:events"
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",

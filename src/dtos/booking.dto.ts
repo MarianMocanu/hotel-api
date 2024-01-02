@@ -1,53 +1,63 @@
 import { Prop } from '@nestjs/mongoose';
+import { Type } from 'class-transformer';
 import {
   IsArray,
-  IsDate,
+  IsDateString,
   IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsObject,
-  IsString,
+  IsDefined,
+  ValidateNested,
+  IsOptional,
 } from 'class-validator';
-import { ObjectId } from 'mongoose';
 import { GuestInfo } from 'src/schemas/booking.schema';
+
+export class BookedRoom {
+  @IsNotEmpty()
+  @IsMongoId()
+  roomId: string;
+
+  @IsNotEmpty()
+  @IsMongoId()
+  packageId: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsMongoId({ each: true })
+  addonsIds?: string[];
+
+  @IsNotEmpty()
+  @IsObject()
+  guest: GuestInfo;
+}
 
 export class BookingDTO {
   @IsNotEmpty()
   @IsMongoId()
-  hotel_id: ObjectId;
+  hotelId: string;
 
+  @IsDefined()
   @IsNotEmpty()
-  @IsMongoId({ each: true })
-  room_id: ObjectId;
-
-  // @IsNotEmpty()
   @IsArray()
-  @IsMongoId({ each: true })
-  services: ObjectId[];
+  @ValidateNested({ each: true })
+  @Type(() => BookedRoom)
+  rooms: BookedRoom[];
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   checkinDate: Date;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   checkoutDate: Date;
 
   @IsNotEmpty()
   @IsObject()
   @Prop({ type: GuestInfo })
-  guestInfo: GuestInfo;
-
-  @IsNumber()
-  nights: number;
+  guest: GuestInfo;
 
   @IsNotEmpty()
   @IsNumber()
   guestsAmount: number;
-
-  @IsNumber()
-  totalAmount: number;
-
-  @IsString()
-  comments: string;
 }
