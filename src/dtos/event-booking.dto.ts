@@ -12,7 +12,7 @@ import { ObjectId } from 'mongoose';
 export class EventBookingDTO {
   @IsNotEmpty()
   @IsMongoId()
-  hotel_id: ObjectId;
+  venue_id: ObjectId;
 
   @IsNotEmpty()
   @IsString()
@@ -23,23 +23,26 @@ export class EventBookingDTO {
   email: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  tel: number;
+  @IsString()
+  phone: string;
 
   @IsNotEmpty()
   @IsDate()
   date: Date;
 
   @IsNotEmpty()
-  @IsString()
+  @IsNumber()
   guest_amount: number;
-
-  @IsArray()
-  time_slot: string[];
 
   @IsNotEmpty()
   @IsString()
   type: string;
+
+  @IsString()
+  start_time: string;
+
+  @IsString()
+  end_time: string;
 
   @IsString()
   corporation: string;

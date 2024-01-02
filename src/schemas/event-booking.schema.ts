@@ -7,7 +7,7 @@ export type EventBookingDocument = HydratedDocument<EventBooking>;
 @Schema()
 export class EventBooking {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  hotel_id: ObjectId;
+  venue_id: ObjectId;
 
   @Prop()
   date: Date;
@@ -25,10 +25,16 @@ export class EventBooking {
   email: string;
 
   @Prop()
-  tel: number;
+  phone: string;
 
   @Prop()
   guest_amount: number;
+
+  @Prop()
+  start_time: string;
+
+  @Prop()
+  end_time: string;
 
   @Prop()
   corporation: string;

@@ -14,8 +14,11 @@ export class EventQueryDTO {
   @IsString()
   guest_amount: number;
 
-  @IsArray()
-  time_slot: string[];
+  @IsString()
+  start_time: string;
+
+  @IsString()
+  end_time: string;
 
   @IsNotEmpty()
   @IsString()
