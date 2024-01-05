@@ -29,24 +29,14 @@ export class AuthService {
 
   async getUser(id: string): Promise<Partial<IUser>> {
     try {
-      const user = await this.userModel.findById(id);
-      const userRequest = {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone ? user.phone : undefined,
-        address: user.address ? user.address : undefined,
-        dob: user.dob ? user.dob : undefined,
-        bookings: user.bookings ? await this.getBookings(user._id) : undefined,
-      };
-      return userRequest;
+      return await this.userModel.findById(id).populate('bookings');
     } catch (error) {
       return new UnauthorizedException('Login failed');
     }
   }
 
-  async addBookingToUser(userID: string, bookingId: Types.ObjectId): Promise<any> {
-    const user = await this.userModel.findById(userID);
+  async addBookingToUser(userId: string, bookingId: Types.ObjectId): Promise<any> {
+    const user = await this.userModel.findById(userId);
     if (!user) {
       throw new Error('User not found');
     }
@@ -72,15 +62,6 @@ export class AuthService {
       };
 
       return userRequest;
-    } catch (error) {
-      return error.message;
-    }
-  }
-
-  async getBookings(userId: ObjectId): Promise<any> {
-    try {
-      const user = await this.userModel.findById(userId).populate('bookings');
-      return user.bookings;
     } catch (error) {
       return error.message;
     }

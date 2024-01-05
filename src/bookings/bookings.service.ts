@@ -61,8 +61,11 @@ export class BookingsService {
         await this.roomsService.bookRoom(roomId, dates);
       });
 
-      booking.guestInfo.userId &&
-        (await this.userService.addBookingToUser(booking.guestInfo.userId, booking._id));
+      // add booking to user
+      if (booking.guestInfo.userId) {
+        await this.userService.addBookingToUser(booking.guestInfo.userId, booking._id);
+      }
+
       // save booking
       return booking.save();
     } catch (error) {

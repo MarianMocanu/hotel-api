@@ -22,7 +22,8 @@ export const UserSchema = new Schema(
     address: { type: String, required: false, trim: true },
     password: { type: String, required: true, trim: true },
     dob: { type: Date, required: false, trim: true },
-    bookings: [{ type: Schema.Types.ObjectId, ref: 'Bookings', required: false }]  },
+    bookings: [{ type: Schema.Types.ObjectId, ref: 'Bookings', required: false }],
+  },
   {
     collection: 'users',
   },

@@ -46,11 +46,11 @@ export class BookingDTO {
 
   @IsNotEmpty()
   @IsDateString()
-  checkinDate: Date;
+  checkinDate: string;
 
   @IsNotEmpty()
   @IsDateString()
-  checkoutDate: Date;
+  checkoutDate: string;
 
   @IsNotEmpty()
   @IsObject()
