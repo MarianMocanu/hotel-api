@@ -51,9 +51,11 @@ export class EditUserDTO {
   @IsEmail()
   email: string;
 
+  @IsOptional()
   @IsString()
   address: string;
 
-  @IsDate()
-  dob: Date;
+  @IsOptional()
+  @IsString()
+  dob: string;
 }
