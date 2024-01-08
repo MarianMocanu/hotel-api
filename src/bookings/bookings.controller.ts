@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Request, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Request, Delete, Param, HttpCode } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { BookingDTO } from 'src/dtos/booking.dto';
 import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
@@ -8,6 +8,7 @@ export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
   @Post()
+  @HttpCode(201)
   createBooking(@Body() bookingData: BookingDTO) {
     return this.bookingsService.create(bookingData);
   }
