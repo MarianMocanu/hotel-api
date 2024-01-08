@@ -19,6 +19,7 @@ export class BookingsController {
   }
 
   @Post('available-rooms')
+  @HttpCode(200)
   getAvailableRooms(@Body() bookingQuery: BookingQueryDTO) {
     return this.bookingsService.getAvailable(bookingQuery);
   }

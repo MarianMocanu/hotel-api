@@ -5,7 +5,6 @@ import {
   Get,
   Request,
   HttpCode,
-  HttpStatus,
   UseGuards,
   Put,
   Param,
@@ -19,6 +18,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  @HttpCode(201)
   signup(@Body() formData: CreateUserDTO) {
     return this.authService.signup(formData);
   }
@@ -28,8 +28,8 @@ export class AuthController {
     return this.authService.update(id, editUserDto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post('login')
+  @HttpCode(200)
   login(@Body() loginData: LoginUserDto) {
     return this.authService.login(loginData);
   }

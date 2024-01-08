@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { Model, Types } from 'mongoose';
 import { BookingDTO } from 'src/dtos/booking.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
@@ -69,8 +69,9 @@ export class BookingsService {
       // save booking
       return booking.save();
     } catch (error) {
-      console.error(error.message);
-      return error.message;
+      throw new HttpException('Bad Request', 400, {
+        cause: 'Invalid booking data',
+      });
     }
   }
 
@@ -101,7 +102,9 @@ export class BookingsService {
         return { rooms: [], hotel_services: hotel.services };
       }
     } catch (error) {
-      return error.message;
+      throw new HttpException('Bad Request', 400, {
+        cause: 'Invalid query data',
+      });
     }
   }
 

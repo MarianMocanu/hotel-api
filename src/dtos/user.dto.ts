@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsString, IsEmail, IsDate, IsDefined, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsEmail,
+  IsDate,
+  IsDefined,
+  IsOptional,
+  IsDateString,
+} from 'class-validator';
 
 export class CreateUserDTO {
   @IsDefined()
@@ -25,8 +33,8 @@ export class CreateUserDTO {
   password: string;
 
   @IsOptional()
-  @IsDate()
-  dob: Date;
+  @IsDateString()
+  dob: string;
 }
 
 export class LoginUserDto {

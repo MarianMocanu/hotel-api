@@ -1,5 +1,5 @@
-import { FilterQuery, Model, ObjectId, Types, UpdateQuery } from 'mongoose';
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
+import { FilterQuery, Model, Types, UpdateQuery } from 'mongoose';
+import { Injectable, Inject, UnauthorizedException, HttpException } from '@nestjs/common';
 import { CreateUserDTO, EditUserDTO } from '../dtos/user.dto';
 import { LoginUserDto } from 'src/dtos/user.dto';
 import { IUser } from '../schemas/user.schema';
@@ -24,7 +24,9 @@ export class AuthService {
       const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
       return { status: 'success', message: 'Login successful', token: token };
     }
-    return new UnauthorizedException('Invalid token');
+    throw new HttpException('Unauthorized', 401, {
+      cause: 'Invalid login credentials',
+    });
   }
 
   async getUser(id: string): Promise<Partial<IUser>> {
