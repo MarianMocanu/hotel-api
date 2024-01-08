@@ -31,7 +31,8 @@ export class AuthService {
 
   async getUser(id: string): Promise<Partial<IUser>> {
     try {
-      return await this.userModel.findById(id).populate('bookings');
+      const user = await this.userModel.findById(id).select('-password -__v').populate('bookings');
+      return user;
     } catch (error) {
       return new UnauthorizedException('Login failed');
     }

@@ -6,7 +6,7 @@ export type EventVenueDocument = HydratedDocument<EventVenue>;
 @Schema()
 export class EventVenue {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  hotel_id: ObjectId;
+  hotel_id: string;
 
   @Prop()
   name: string;
