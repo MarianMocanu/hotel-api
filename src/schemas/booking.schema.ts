@@ -36,7 +36,7 @@ export class GuestInfo {
 
 @Schema()
 export class Booking {
-  @Prop()
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
   hotel_id: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Room' }] })
