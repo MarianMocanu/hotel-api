@@ -2,7 +2,6 @@ import {
   IsNotEmpty,
   IsString,
   IsEmail,
-  IsDate,
   IsDefined,
   IsOptional,
   IsDateString,
@@ -64,6 +63,6 @@ export class EditUserDTO {
   address: string;
 
   @IsOptional()
-  @IsString()
+  @IsDateString()
   dob: string;
 }
