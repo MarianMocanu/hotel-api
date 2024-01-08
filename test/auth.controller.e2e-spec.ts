@@ -2,19 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDTO, LoginUserDto } from 'src/dtos/user.dto';
 
 describe('BookingController (e2e)', () => {
   let app: INestApplication;
-  let authService: AuthService;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
-
-    authService = moduleFixture.get<AuthService>(AuthService);
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
@@ -24,6 +20,7 @@ describe('BookingController (e2e)', () => {
 
   describe('POST signup auth controller', () => {
     it('return a 201 status code for valid user data', async () => {
+      // Arrange
       const user: CreateUserDTO = {
         name: 'John Doe',
         email: 'john@doe.com',
@@ -32,7 +29,9 @@ describe('BookingController (e2e)', () => {
         phone: '12345678',
         password: 'qwerty',
       };
+      //   Act
       const response = await request(app.getHttpServer()).post('/auth/signup').send(user);
+      //   Assert
       expect(response.statusCode).toBe(201);
     });
 
@@ -82,16 +81,16 @@ describe('BookingController (e2e)', () => {
       const response = await request(app.getHttpServer()).post('/auth/login').send(invalidUser);
       expect(response.statusCode).toBe(401);
     });
-  });
 
-  it('returns a token for valid credentials', async () => {
-    const user: LoginUserDto = {
-      email: 'john@doe.com',
-      password: 'qwerty',
-    };
-    const response = await request(app.getHttpServer()).post('/auth/login').send(user);
-    expect(response.body).toHaveProperty('token');
-    expect(response.body.token).toBeTruthy();
+    it('returns a token for valid credentials', async () => {
+      const user: LoginUserDto = {
+        email: 'john@doe.com',
+        password: 'qwerty',
+      };
+      const response = await request(app.getHttpServer()).post('/auth/login').send(user);
+      expect(response.body).toHaveProperty('token');
+      expect(response.body.token).toBeTruthy();
+    });
   });
 
   afterAll(async () => {

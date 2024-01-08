@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { BookingsService } from 'src/bookings/bookings.service';
 import { BookingDTO } from 'src/dtos/booking.dto';
 import { BookingQueryDTO } from 'src/dtos/booking-query.dto';
 import { HotelsService } from 'src/hotels/hotels.service';
@@ -181,6 +180,7 @@ describe('BookingController (e2e)', () => {
     });
 
     it('return rooms from the same hotel', async () => {
+      // Arrange
       const bookingQuery: BookingQueryDTO = {
         hotelId: '6596e413cc9ae1e2e572be27',
         checkinDate: '2022-01-01',
@@ -189,9 +189,13 @@ describe('BookingController (e2e)', () => {
         numberOfRooms: 1,
       };
       const hotel = await hotelService.getHotelData(bookingQuery.hotelId);
+
+      // Act
       const response = await request(app.getHttpServer())
         .post('/bookings/available-rooms')
         .send(bookingQuery);
+
+      // Assert
       const rooms: IRoom[] = await Promise.all(
         response.body.rooms.map(async room => await roomService.getRoomById(room._id)),
       );
@@ -213,6 +217,7 @@ describe('BookingController (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/bookings/available-rooms')
         .send(bookingQuery);
+
       const rooms: IRoom[] = await Promise.all(
         response.body.rooms.map(async room => await roomService.getRoomById(room._id)),
       );
