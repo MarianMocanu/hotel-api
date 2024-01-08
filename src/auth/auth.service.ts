@@ -35,6 +35,14 @@ export class AuthService {
     }
   }
 
+  async getUserAccount(id: string): Promise<IUser> {
+    try {
+      return await this.userModel.findById(id);
+    } catch (error) {
+      throw new UnauthorizedException('Login failed');
+    }
+  }
+
   async addBookingToUser(userId: string, bookingId: Types.ObjectId): Promise<any> {
     const user = await this.userModel.findById(userId);
     if (!user) {

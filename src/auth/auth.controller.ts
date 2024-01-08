@@ -39,4 +39,10 @@ export class AuthController {
   getProfile(@Request() req) {
     return this.authService.getUser(req.user._id);
   }
+
+  @UseGuards(AuthGuard)
+  @Get('account')
+  getAccount(@Request() req) {
+    return this.authService.getUser(req.user._id);
+  }
 }
