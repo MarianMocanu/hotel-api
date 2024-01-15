@@ -1,53 +1,52 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument, ObjectId, Types } from 'mongoose';
+import { eachDayOfInterval, format, parseISO } from 'date-fns';
+import { HydratedDocument } from 'mongoose';
 
-export type RoomDocument = HydratedDocument<Room>;
-
+export interface IRoom extends RoomDocument {
+  readonly name: string;
+  readonly type: string;
+  readonly size: number;
+  readonly facilities: string[];
+  readonly price: number;
+  readonly maxGuests: number;
+  readonly booked_dates: Date[];
+  readonly description: string;
+  isAvailableForPeriod(checkin: string, checkout: string): boolean;
+}
 @Schema()
 export class Room {
+  @Prop()
+  name: string;
 
-    // @Prop({type: Types.ObjectId, required: false})
-    // _id: ObjectId;
+  @Prop()
+  type: string;
 
+  @Prop()
+  size: number;
 
-    @Prop()
-    name: string;
+  @Prop()
+  facilities: string[];
 
-    @Prop()
-    images: string[];
+  @Prop()
+  price: number;
 
-    @Prop()
-    type: string;
+  @Prop()
+  maxGuests: number;
 
-    @Prop()
-    size: number;
+  @Prop({ type: [Date] })
+  booked_dates: Date[];
 
-    @Prop()
-    facilities: string[];
-
-    @Prop()
-    price: number;
-
-    @Prop()
-    maxGuests: number;
-
-    @Prop({ type: [Date] })
-    booked_dates: Date[];
+  @Prop()
+  description: string;
 }
 
+export type RoomDocument = HydratedDocument<Room>;
 export const RoomSchema = SchemaFactory.createForClass(Room);
 
-
-
-// {
-//     "hotel_id": 0,
-//     "name": "Standard Double Room",
-//     "description": "Our standard rooms are furnished in a modern, Nordic style and have a large bathroom.",
-//     "images": {},
-//     "type": "double",
-//     "size": 16,
-//     "facilities": ["double bed", "air conditioning", "armchair", "iron & board", "tv", "free Wi-Fi", "workplace", "blow-dryer", "deposit box"],
-//     "price": 1361,
-//     "maxGuests": 2,
-//     "booked_dates": {}
-// }
+RoomSchema.methods.isAvailableForPeriod = function (checkin: string, checkout: string) {
+  const interval = eachDayOfInterval({ start: parseISO(checkin), end: parseISO(checkout) });
+  interval.pop();
+  const dates = interval.map(date => format(date, 'yyyy-MM-dd'));
+  const bookedDates = this.booked_dates.map(date => format(date, 'yyyy-MM-dd'));
+  return !dates.some(date => bookedDates.includes(date));
+};

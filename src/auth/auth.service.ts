@@ -1,7 +1,7 @@
-import { Model } from 'mongoose';
-import { Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { CreateUserDTO } from '../dtos/create-user.dto';
-import { LoginUserDto } from 'src/dtos/login-user.dto';
+import { FilterQuery, Model, Types, UpdateQuery } from 'mongoose';
+import { Injectable, Inject, UnauthorizedException, HttpException } from '@nestjs/common';
+import { CreateUserDTO, EditUserDTO } from '../dtos/user.dto';
+import { LoginUserDto } from 'src/dtos/user.dto';
 import { IUser } from '../schemas/user.schema';
 import * as jwt from 'jsonwebtoken';
 
@@ -9,8 +9,8 @@ import * as jwt from 'jsonwebtoken';
 export class AuthService {
   constructor(
     @Inject('USER_MODEL')
-    private userModel: Model<IUser>
-  ) { }
+    private userModel: Model<IUser>,
+  ) {}
 
   async signup(createUserDTO: CreateUserDTO): Promise<IUser> {
     const createdUser = new this.userModel(createUserDTO);
@@ -24,26 +24,57 @@ export class AuthService {
       const token = jwt.sign({ _id: user._id }, process.env.jwt_secret);
       return { status: 'success', message: 'Login successful', token: token };
     }
-    return new UnauthorizedException('Invalid token');
+    throw new HttpException('Unauthorized', 401, {
+      cause: 'Invalid login credentials',
+    });
   }
-
 
   async getUser(id: string): Promise<Partial<IUser>> {
     try {
-      const user = await this.userModel.findById(id);
-      const userRequest = {
-        name: user.name,
-        email: user.email,
-        phone: user.phone ? user.phone : undefined,
-        address: user.address ? user.address : undefined,
-        dob: user.dob ? user.dob : undefined,
-      }
+      const user = await this.userModel.findById(id).select('-password -__v').populate('bookings');
+      return user;
+    } catch (error) {
+      return new UnauthorizedException('Login failed');
+    }
+  }
 
-      return userRequest
+  async getUserAccount(id: string): Promise<IUser> {
+    try {
+      return await this.userModel.findById(id);
+    } catch (error) {
+      throw new UnauthorizedException('Login failed');
+    }
+  }
+
+  async addBookingToUser(userId: string, bookingId: Types.ObjectId): Promise<any> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    user.bookings.push(bookingId);
+    await user.save();
+    return 'success';
+  }
+
+  async update(userId: string, editUserDto: EditUserDTO): Promise<Partial<IUser>> | null {
+    try {
+      const filter: FilterQuery<IUser> = { _id: userId };
+      const update: UpdateQuery<IUser> = editUserDto;
+      const options = { new: true };
+
+      const result = await this.userModel.findOneAndUpdate(filter, update, options);
+      const userRequest = {
+        _id: result._id,
+        name: result.name,
+        email: result.email,
+        phone: result.phone ? result.phone : undefined,
+        address: result.address ? result.address : undefined,
+        dob: result.dob ? result.dob : undefined,
+      };
+
+      return userRequest;
     } catch (error) {
       return error.message;
-      return new UnauthorizedException('Login failed');
-
     }
   }
 }

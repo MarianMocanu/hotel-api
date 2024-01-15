@@ -8,17 +8,8 @@ import { HotelsModule } from 'src/hotels/hotels.module';
 import { hotelsProviders } from 'src/hotels/hotels.providers';
 
 @Module({
-    imports: [DatabaseModule, HotelsModule],
-    controllers: [RoomsController],
-    providers: [RoomsService, ...roomsProviders, HotelsService, ...hotelsProviders]
+  imports: [DatabaseModule, HotelsModule],
+  controllers: [RoomsController],
+  providers: [RoomsService, ...roomsProviders, HotelsService, ...hotelsProviders],
 })
 export class RoomsModule {}
-
-
-
-
-
-
-
-
-

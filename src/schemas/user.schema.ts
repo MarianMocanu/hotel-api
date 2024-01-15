@@ -1,5 +1,6 @@
-import { Document, Schema } from 'mongoose';
+import { Document, Schema, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { Booking } from './booking.schema';
 
 export interface IUser extends Document {
   readonly name: string;
@@ -8,6 +9,7 @@ export interface IUser extends Document {
   readonly address: string | undefined;
   readonly password: string;
   readonly dob: Date | undefined;
+  readonly bookings: Types.ObjectId[] | undefined;
 
   comparePassword(password: string): Promise<boolean>;
 }
@@ -20,6 +22,7 @@ export const UserSchema = new Schema(
     address: { type: String, required: false, trim: true },
     password: { type: String, required: true, trim: true },
     dob: { type: Date, required: false, trim: true },
+    bookings: [{ type: Schema.Types.ObjectId, ref: 'Bookings', required: false }],
   },
   {
     collection: 'users',
