@@ -10,11 +10,6 @@ async function bootstrap() {
     credentials: true,
   }});
 
-  app.enableCors({
-    origin: 'http://localhost:3000', // Replace with your frontend origin
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    // credentials: true, // Optional: Allow cookies and authentication headers
-  });
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 4200;
