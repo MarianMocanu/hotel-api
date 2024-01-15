@@ -58,7 +58,7 @@ const servicesData = [
 ];
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/hotel')
+  .connect('mongodb://mongodb:27017/hotel')
   .then(() => {
     console.log('Connected to MongoDB');
   })

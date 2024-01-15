@@ -6,7 +6,7 @@ const Hotel = mongoose.model('Hotel', HotelSchema);
 const EventVenue = mongoose.model('EventVenue', EventVenueSchema);
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/hotel')
+  .connect('mongodb://mongodb:27017/hotel')
   .then(() => {
     console.log('Connected to MongoDB');
   })

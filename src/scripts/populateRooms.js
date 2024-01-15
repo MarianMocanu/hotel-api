@@ -4,7 +4,7 @@ const { RoomSchema } = require('../../dist/schemas/room.schema.js');
 const Room = mongoose.model('Room', RoomSchema);
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/hotel')
+  .connect('mongodb://mongodb:27017/hotel')
   .then(() => {
     console.log('Connected to MongoDB');
   })
